@@ -1,10 +1,13 @@
 <script>
+  import axios from 'axios';
+  
   export default {
     data() {
       return {
         city: "",
         error: "",
-        info: null
+        info: null,
+        weatherApiKey: import.meta.env.VITE_WEATHER_API
       }
     },
     computed: {
@@ -20,7 +23,7 @@
         }
         this.error = ""
 
-        axios.get(`PASTE API HERE`)
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${this.weatherApiKey}`)
           .then(res => (this.info = res.data))
       },
       showTemp() {
@@ -49,8 +52,8 @@
     <button v-if="city != ``" @click="getWeather()">Получить погоду</button>
     <button disabled v-else>Введите город</button>
     <p class="error">{{ error }}</p>
-
-    <p v-show="info != null">{{ info.main.temp }}</p>
+    <p v-if="info != null">{{ info.main.temp }}</p>
+    
   </div>
 </template>
 
